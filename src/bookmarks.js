@@ -41,17 +41,19 @@ const handlebuttonclickonadditem=function(){
             "title":newbook[1].value,
             "url":newbook[0].value,
             "rating":newbook[2].value,
-            "description":newbook[3].value,
+            "desc" : newbook[3].value,
         }
-        console.log(bookmark);
-        /*api.createItem(bookmark)
+        console.log(bookmark.description);
+        api.createItem(bookmark)
             .then(res => res.json())
-            .then((newItem) => {
-
+            .then(newItem => {
+                //newItem.expanded=false;
                 store.addItem(newItem);
                 //render();
-      });*/
-        store.addItem(bookmark);
+                thebody();
+                handlebuttonclickonbox();
+      });
+        //store.addItem(bookmark);
         thebody();//rendersnewdody
         handlebuttonclickonbox();
     });
@@ -102,7 +104,7 @@ const generatelistofbookmarks= function(books){
             </div>
             <div class ="box2" style="display:none" id="box2">
                 <h5 class='test'>${element.url}</h5>
-                <p> ${element.description}</p>
+                <p> ${element.desc}</p>
                 <button class="removeitem"id="removeitem">Remove item</button>
             </div>
             

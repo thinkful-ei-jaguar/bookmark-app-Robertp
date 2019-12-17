@@ -6,8 +6,8 @@ const getItems = function() {
 };
 
 const createItem = function (name) {
-  const newItem = JSON.stringify({ name });
-
+  const newItem = JSON.stringify(name);
+    console.log(newItem);
   return fetch(`${BASE_URL}/bookmarks`, {
     method: 'POST',
     headers: {
