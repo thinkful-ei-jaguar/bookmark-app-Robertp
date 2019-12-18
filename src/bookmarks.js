@@ -15,6 +15,12 @@ const newbutton = function(){
     </div>
     `
 }
+const handlebuttonclickonfilter=function(){
+    $('.filter').click(function(event){
+        event.preventDefault();
+        console.log("filter");
+    });
+}
 const handlebuttonclickonnew=function(){
     $('.buttonstyle').click(function(event){
         event.preventDefault();
@@ -36,6 +42,7 @@ const handlebuttonclickonbox=function(){
 const handlebuttonclickonadditem=function(){
     $('#additem').on('click',function(event){
         event.preventDefault();
+        console.log("1");
         var newbook = $('#new-bookmark-form').serializeArray();
         let bookmark={
             "title":newbook[1].value,
@@ -43,16 +50,21 @@ const handlebuttonclickonadditem=function(){
             "rating":newbook[2].value,
             "desc" : newbook[3].value,
         }
+        console.log("2");
         //console.log(bookmark.description);
         api.createItem(bookmark)
-            .then(res => res.json())
             .then(newItem => {
                 //newItem.expanded=false;
+                console.log("added to api")
                 store.addItem(newItem);
                 //render();
                 thebody();
                 handlebuttonclickonbox();
-      });
+                console.log("rendered the body")
+             })
+             .catch((error) => {
+                store.setError(error.message);
+            });
         //store.addItem(bookmark);
         thebody();//rendersnewdody
         handlebuttonclickonbox();
@@ -71,12 +83,14 @@ const handlebuttonclickondeleteitem = function(){
         console.log(del);
         store.removeitem(data);//removes from store
         api.DeleteItem(del)//remove from api
-            .then(res => res.json())
             .then(() => {
                 thebody();//rendersnewdody
                 handlebuttonclickonbox();
                 //render();
-         });
+         })
+         .catch((error) => {
+            store.setError(error.message);
+        });
         console.log("reachedend");
         thebody();//rendersnewdody
         handlebuttonclickonbox();//renders the eventfornewbody    
@@ -151,6 +165,7 @@ const eventhandler=function(){
     handlebuttonclickonbox();
     handlebuttonclickonadditem();
     handlebuttonclickondeleteitem();
+    handlebuttonclickonfilter();
 
 }
 

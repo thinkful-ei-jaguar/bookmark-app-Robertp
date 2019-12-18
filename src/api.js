@@ -8,19 +8,21 @@ const getItems = function() {
 };
 
 const createItem = function (bookmark) {
+    console.log("3");
   const newItem = JSON.stringify(bookmark);
     console.log(newItem);
+    console.log("4");
   return listApiFetch(`${BASE_URL}/bookmarks`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body:newItem
-  })
-  .catch((error) => {
-    store.setError(error.message);
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body:newItem
+    })
+    .catch((error) => {
+        store.setError(error.message);
 
-  });
+    });
 };
 const DeleteItem = function (id) {
     console.log(`${BASE_URL}/bookmarks/${id}`);
@@ -65,33 +67,9 @@ const DeleteItem = function (id) {
       });
   }
   
-/*
-const updateItem = function (id, updateData) {
-  const newData = JSON.stringify(updateData);
-  console.log(`${BASE_URL}/items/${id}`);
-  return fetch(`${BASE_URL}/items/${id}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: newData
-  });
-};
-const DeleteItem = function (id) {
-  console.log(`${BASE_URL}/items/${id}`);
-  return fetch(`${BASE_URL}/items/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  });
 
-}
-
-*/
 export default {
   getItems,
   createItem,
-  //updateItem,
   DeleteItem
 };

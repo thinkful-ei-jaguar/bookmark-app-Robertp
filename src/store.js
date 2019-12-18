@@ -40,7 +40,9 @@ const removeitem = function(item){
 const setError = function (error) {
   this.items.error = error;
 };
-
+const getError = function (error) {
+  return this.items.error;
+};
 
 
 
@@ -49,5 +51,6 @@ export default{
   items,
   addItem,
   removeitem,
-  setError
+  setError,
+  getError
 }
