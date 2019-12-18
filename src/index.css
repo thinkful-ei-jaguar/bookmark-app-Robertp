@@ -37,10 +37,13 @@
     margin: auto;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-evenly;
 }
 
 .rightpls{
-    margin-left: 70%;
+    margin: auto;
+}
+html{
+    background-color: burlywood;
 }

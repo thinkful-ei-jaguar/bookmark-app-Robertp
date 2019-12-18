@@ -3,15 +3,11 @@ import store from './store'
 const BASE_URL = 'https://thinkful-list-api.herokuapp.com/Robert';
 
 const getItems = function() {
-
   return fetch(`${BASE_URL}/bookmarks`); 
 };
 
 const createItem = function (bookmark) {
-    console.log("3");
   const newItem = JSON.stringify(bookmark);
-    console.log(newItem);
-    console.log("4");
   return listApiFetch(`${BASE_URL}/bookmarks`, {
         method: 'POST',
         headers: {
@@ -25,8 +21,6 @@ const createItem = function (bookmark) {
     });
 };
 const DeleteItem = function (id) {
-    console.log(`${BASE_URL}/bookmarks/${id}`);
-
     return listApiFetch(`${BASE_URL}/bookmarks/${id}`, {
       method: 'DELETE',
       headers: {

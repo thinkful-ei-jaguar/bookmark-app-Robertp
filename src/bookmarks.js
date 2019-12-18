@@ -9,16 +9,39 @@ const newbutton = function(){
     return `
         <div class="head">
             <button class="buttonstyle">New</button>
-            <button class="filter">filter</button>
-            <div class=""filtercontent">
-            </div>
+            <select class= "select"  name="select">
+                <option value="none">filter</option>
+                <option type="submit" value="by min to max">Starting at low</option>
+                <option type="submit" value="by max to min">Starting at high</option>
+            </select>
     </div>
     `
 }
 const handlebuttonclickonfilter=function(){
-    $('.filter').click(function(event){
-        event.preventDefault();
-        console.log("filter");
+    $('.select').change(function(event){
+        //event.preventDefault();
+        console.log($(this).val())
+        if($(this).val() == "by min to max"){
+            console.log("unsorted")
+            let a = store.items.bookmarks.sort(function(a, b){
+                return a.rating-b.rating
+            });
+            //console.log(a);
+            thebody();
+            handlebuttonclickonbox();
+            console.log("sorted")
+        }
+        else if($(this).val() == "by max to min"){
+            console.log("unsorted")
+            let a = store.items.bookmarks.sort(function(a, b){
+                return b.rating-a.rating
+            });
+            //console.log(a);
+            thebody();
+            handlebuttonclickonbox();
+            console.log("sorted")
+        }
+
     });
 }
 const handlebuttonclickonnew=function(){
@@ -40,9 +63,8 @@ const handlebuttonclickonbox=function(){
     });
 }
 const handlebuttonclickonadditem=function(){
-    $('#additem').on('click',function(event){
+    $('#additem').on('submit',function(event){
         event.preventDefault();
-        console.log("1");
         var newbook = $('#new-bookmark-form').serializeArray();
         let bookmark={
             "title":newbook[1].value,
@@ -50,22 +72,17 @@ const handlebuttonclickonadditem=function(){
             "rating":newbook[2].value,
             "desc" : newbook[3].value,
         }
-        console.log("2");
         //console.log(bookmark.description);
         api.createItem(bookmark)
             .then(newItem => {
-                //newItem.expanded=false;
-                console.log("added to api")
                 store.addItem(newItem);
-                //render();
                 thebody();
-                handlebuttonclickonbox();
-                console.log("rendered the body")
+                handlebuttonclickonbox(); 
              })
              .catch((error) => {
                 store.setError(error.message);
             });
-        //store.addItem(bookmark);
+        
         thebody();//rendersnewdody
         handlebuttonclickonbox();
         
@@ -75,7 +92,7 @@ const handlebuttonclickonadditem=function(){
 
 const handlebuttonclickondeleteitem = function(){
     $('.removeitem').on('click',function(event){
-        //event.preventDefault();
+        event.preventDefault();
         console.log("my cause is just")
         const data = $(event.currentTarget).closest(".test1").find('#box').find('h3').text();//grabs title
         console.log(data);
@@ -103,14 +120,14 @@ const handlebuttonclickondeleteitem = function(){
 const newbookadd= function(){
     return `<form id="new-bookmark-form" style="display:none">
             <label for="newbookmarkentry">Add New Bookmark</label>
-            <input type="text" name="url" class="add-new-bookmark-entry" placeholder="Http//samplelink.code/whatever">
+            <input type="text" name="url" class="add-new-bookmark-entry" placeholder="Http//samplelink.code/whatever" required>
             <label for="Name">Name</label>
-            <input type="text" name="title" class="add-new-bookmark-name" placeholder="harry potter,blues clue">
+            <input type="text" name="title" class="add-new-bookmark-name" placeholder="harry potter,blues clue" required>
             <label for="stars">how many stars</label>
-            <input type="text" name="rating" class="add-new-bookmark-star" placeholder="1-5">
+            <input type="text" name="rating" class="add-new-bookmark-star" placeholder="1-5" required>
             <label for="desctiption">description : </label>
-            <input class="higherheight" type="text" name="description" class="add-new-bookmark-star" placeholder="orem lipsum .." height:"50px">
-            <button class ="additem" id="additem">Add item</button>
+            <input class="higherheight" type="text" name="description" class="add-new-bookmark-star" placeholder="orem lipsum .." height:"50px" required>
+            <button type= "submit" class ="additem" id="additem">Add item</button>
     </form>
     `
 }
@@ -122,17 +139,15 @@ const generatelistofbookmarks= function(books){
         <div class ="test1" id="box-toggle">
             <div class ="box"id="box">
                 <h3 id= ${element.id}>${element.title}</h3>
-                <p class="rightpls"> ${element.rating}</p>
+                <p class="rightpls"> rating: ${element.rating}</p>
             </div>
             <div class ="box2" style="display:none" id="box2">
-                <h5 class='test'>${element.url}</h5>
+                <a href=${element.url} target="_blank">${element.url}</a>
                 <p> ${element.desc}</p>
                 <button class="removeitem">Remove item</button>
             </div>
-            
         </div>
         `
-        //console.log(element);
         });
     return htmlbod;
 
