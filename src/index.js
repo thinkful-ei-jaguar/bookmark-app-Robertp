@@ -4,7 +4,7 @@ import 'normalize.css';
 import './index.css';
 
 import api from './api';
-//import store from './store';
+import store from './store';
 
 
 
@@ -16,9 +16,10 @@ const main = function () {
     api.getItems()
     .then(res => res.json())
     .then((items) => {
-        console.log(items);
-      //items.forEach((item) => store.addItem(item));
-      //bookmarks.render();
+        //console.log(items);
+      items.forEach((item) => store.addItem(item));
+      bookmarks.render();
+      bookmarks.eventhandler();
     });
 
     bookmarks.render();

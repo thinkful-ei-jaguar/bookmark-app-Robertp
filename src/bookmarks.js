@@ -43,7 +43,7 @@ const handlebuttonclickonadditem=function(){
             "rating":newbook[2].value,
             "desc" : newbook[3].value,
         }
-        console.log(bookmark.description);
+        //console.log(bookmark.description);
         api.createItem(bookmark)
             .then(res => res.json())
             .then(newItem => {
@@ -56,22 +56,30 @@ const handlebuttonclickonadditem=function(){
         //store.addItem(bookmark);
         thebody();//rendersnewdody
         handlebuttonclickonbox();
+        
     });
 }
 
 
 const handlebuttonclickondeleteitem = function(){
-    $('#removeitem').on('click',function(event){
+    $('.removeitem').on('click',function(event){
         //event.preventDefault();
         console.log("my cause is just")
         const data = $(event.currentTarget).closest(".test1").find('#box').find('h3').text();//grabs title
         console.log(data);
-        store.removeitem(data);
-        const domel=$(event.currentTarget).closest(".test1");
-        console.log(domel);
+        const del=$(event.currentTarget).closest(".test1").find('#box').find('h3').attr('id');//gets element id
+        console.log(del);
+        store.removeitem(data);//removes from store
+        api.DeleteItem(del)//remove from api
+            .then(res => res.json())
+            .then(() => {
+                thebody();//rendersnewdody
+                handlebuttonclickonbox();
+                //render();
+         });
+        console.log("reachedend");
         thebody();//rendersnewdody
-        handlebuttonclickonbox();
-        //renders the eventfornewbody    
+        handlebuttonclickonbox();//renders the eventfornewbody    
     });
 }
 
@@ -99,13 +107,13 @@ const generatelistofbookmarks= function(books){
         htmlbod+=`
         <div class ="test1" id="box-toggle">
             <div class ="box"id="box">
-                <h3>${element.title}</h3>
+                <h3 id= ${element.id}>${element.title}</h3>
                 <p class="rightpls"> ${element.rating}</p>
             </div>
             <div class ="box2" style="display:none" id="box2">
                 <h5 class='test'>${element.url}</h5>
                 <p> ${element.desc}</p>
-                <button class="removeitem"id="removeitem">Remove item</button>
+                <button class="removeitem">Remove item</button>
             </div>
             
         </div>
