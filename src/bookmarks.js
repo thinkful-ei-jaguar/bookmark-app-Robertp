@@ -20,26 +20,26 @@ const newbutton = function(){
 const handlebuttonclickonfilter=function(){
     $('.select').change(function(event){
         //event.preventDefault();
-        console.log($(this).val())
+        
         if($(this).val() == "by min to max"){
-            console.log("unsorted")
+            
             let a = store.items.bookmarks.sort(function(a, b){
                 return a.rating-b.rating
             });
-            //console.log(a);
+           
             thebody();
             handlebuttonclickonbox();
-            console.log("sorted")
+            
         }
         else if($(this).val() == "by max to min"){
-            console.log("unsorted")
+           
             let a = store.items.bookmarks.sort(function(a, b){
                 return b.rating-a.rating
             });
-            //console.log(a);
+
             thebody();
             handlebuttonclickonbox();
-            console.log("sorted")
+            
         }
 
     });
@@ -53,17 +53,14 @@ const handlebuttonclickonnew=function(){
 
 const handlebuttonclickonbox=function(){
     $('.test1').on('click',function(event){
-        //console.log(event.currentTarget);
         const data = $(event.currentTarget).find("#box2");
-        //console.log(data);
         $(data).toggle();
         handlebuttonclickondeleteitem();
-        //event.stopPropagation();
     
     });
 }
 const handlebuttonclickonadditem=function(){
-    $('#additem').on('submit',function(event){
+    $('#new-bookmark-form').on('submit',function(event){
         event.preventDefault();
         var newbook = $('#new-bookmark-form').serializeArray();
         let bookmark={
@@ -72,7 +69,7 @@ const handlebuttonclickonadditem=function(){
             "rating":newbook[2].value,
             "desc" : newbook[3].value,
         }
-        //console.log(bookmark.description);
+        
         api.createItem(bookmark)
             .then(newItem => {
                 store.addItem(newItem);
@@ -93,22 +90,18 @@ const handlebuttonclickonadditem=function(){
 const handlebuttonclickondeleteitem = function(){
     $('.removeitem').on('click',function(event){
         event.preventDefault();
-        console.log("my cause is just")
         const data = $(event.currentTarget).closest(".test1").find('#box').find('h3').text();//grabs title
-        console.log(data);
-        const del=$(event.currentTarget).closest(".test1").find('#box').find('h3').attr('id');//gets element id
-        console.log(del);
+        const del=$(event.currentTarget).closest(".test1").find('#box').find('h3').attr('id');//gets element id  
         store.removeitem(data);//removes from store
         api.DeleteItem(del)//remove from api
             .then(() => {
                 thebody();//rendersnewdody
                 handlebuttonclickonbox();
-                //render();
+
          })
          .catch((error) => {
             store.setError(error.message);
         });
-        console.log("reachedend");
         thebody();//rendersnewdody
         handlebuttonclickonbox();//renders the eventfornewbody    
     });

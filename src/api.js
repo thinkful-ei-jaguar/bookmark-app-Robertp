@@ -8,6 +8,7 @@ const getItems = function() {
 
 const createItem = function (bookmark) {
   const newItem = JSON.stringify(bookmark);
+  console.log(newItem);
   return listApiFetch(`${BASE_URL}/bookmarks`, {
         method: 'POST',
         headers: {
